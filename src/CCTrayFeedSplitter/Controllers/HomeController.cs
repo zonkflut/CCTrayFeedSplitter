@@ -12,7 +12,9 @@ namespace CCTrayFeedSplitter.Controllers
         public ActionResult Index()
         {
             var partitionCount = Settings.Default.PartitionCount;
-            var host = Request.Url.Scheme + "://" + Request.Url.Authority;
+            var host = Request.Url != null 
+                ? Request.Url.Scheme + "://" + Request.Url.Authority 
+                : string.Empty;
             var feedList = Enumerable
                 .Range(0, partitionCount)
                 .Select(x => new Feed { Url = host + Url.Action("Feed", "Home", new { id = x }) })
@@ -44,7 +46,7 @@ namespace CCTrayFeedSplitter.Controllers
             var feedUrl = Settings.Default.FeedUrl;
             var partitionCount = Settings.Default.PartitionCount;
             
-            if (id >= partitionCount)
+            if (id < 0 || id >= partitionCount)
             {
                 Response.StatusCode = 404; 
                 Response.TrySkipIisCustomErrors = true; 
