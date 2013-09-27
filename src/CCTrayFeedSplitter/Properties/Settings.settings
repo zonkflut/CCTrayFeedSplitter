@@ -1,0 +1,12 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="CCTrayFeedSplitter.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="PartitionCount" Type="System.Int32" Scope="Application">
+      <Value Profile="(Default)">2</Value>
+    </Setting>
+    <Setting Name="FeedUrl" Type="System.Uri" Scope="Application">
+      <Value Profile="(Default)">http://localhost:64663/cctray.xml</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

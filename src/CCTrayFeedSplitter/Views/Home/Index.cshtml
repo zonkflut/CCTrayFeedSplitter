@@ -1,0 +1,18 @@
+﻿@model IEnumerable<CCTrayFeedSplitter.Models.Feed>
+
+@{
+    ViewBag.Title = "CCTray Feed Splitter";
+}
+
+<h1>CCTray Feed Splitter</h1>
+@Html.ActionLink("Configure", "Configure", "Home")
+
+<h2>Feeds</h2>
+<ul>
+@foreach (var feed in Model)
+{
+    <li>
+        <a href="@feed.Url">@feed.Url</a>
+    </li>
+}
+</ul>

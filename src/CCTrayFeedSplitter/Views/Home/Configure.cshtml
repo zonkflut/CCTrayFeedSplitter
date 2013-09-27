@@ -1,0 +1,19 @@
+﻿@model CCTrayFeedSplitter.Models.ConfigurationModel
+
+@{
+    ViewBag.Title = "CCTray Feed Splitter Configuration";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>CCTray Feed Splitter Configuration</h2>
+
+@using (Html.BeginForm("Configure", "Home", FormMethod.Post))
+{
+    @Html.LabelFor(x => x.PartitionCount, "Partition Count")
+    @Html.TextBoxFor(x => x.PartitionCount)
+    <br />
+    @Html.LabelFor(x => x.FeedUrl, "Feed URL")
+    @Html.TextBoxFor(x => x.FeedUrl)
+    <br />
+    <input type="submit" value="Save Configuration"/>
+}
