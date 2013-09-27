@@ -22,14 +22,14 @@ namespace CCTrayFeedSplitter.Controllers
             return View(feedList);
         }
 
-        public ActionResult Configure()
+        public PartialViewResult Configure()
         {
             var configurationModel = new ConfigurationModel
             {
                 FeedUrl = Settings.Default.FeedUrl,
                 PartitionCount = Settings.Default.PartitionCount,
             };
-            return View(configurationModel);
+            return PartialView(configurationModel);
         }
 
         [HttpPost]
