@@ -4,6 +4,8 @@
 
 @using (Html.BeginForm("Configure", "Home", FormMethod.Post))
 {
+    @(string.IsNullOrWhiteSpace(ViewBag.PartitionCountValidation) ? new HtmlString(string.Empty) : new HtmlString(ViewBag.PartitionCountValidation + "<br />"))
+    @(string.IsNullOrWhiteSpace(ViewBag.FeedUrlValidation) ? new HtmlString(string.Empty) : new HtmlString(ViewBag.FeedUrlValidation + "<br />"))
     @Html.LabelFor(x => x.PartitionCount, "Partition Count")
     @Html.TextBoxFor(x => x.PartitionCount)
     <br />

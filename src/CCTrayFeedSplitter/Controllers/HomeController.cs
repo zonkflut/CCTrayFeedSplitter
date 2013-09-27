@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Net;
 using System.Web.Mvc;
 using System.Xml.Linq;
 using CCTrayFeedSplitter.Models;
@@ -35,9 +36,21 @@ namespace CCTrayFeedSplitter.Controllers
         [HttpPost]
         public ActionResult Configure(ConfigurationModel configuration)
         {
-            Settings.Default.FeedUrl = configuration.FeedUrl;
-            Settings.Default.PartitionCount = configuration.PartitionCount;
-            Settings.Default.Save();
+            if (configuration.PartitionCount < 1)
+            {
+                ViewBag.PartitionCountValidation = "Partition Count cannot be less than 1.";
+            }
+            else if (IsValidLink(configuration.FeedUrl))
+            {
+                ViewBag.FeedUrlValidation = "The provided URL is not available.";
+            }
+            else
+            {
+                Settings.Default.FeedUrl = configuration.FeedUrl;
+                Settings.Default.PartitionCount = configuration.PartitionCount;
+                Settings.Default.Save();   
+            }
+
             return RedirectToAction("Index", "Home");
         }
 
@@ -74,6 +87,30 @@ namespace CCTrayFeedSplitter.Controllers
             }
 
             return new XmlActionResult(feedPartitions[id]);
+        }
+
+        private bool IsValidLink(Uri feedUrl)
+        {
+            var responseCode = HttpStatusCode.NotFound;
+            try
+            {
+                var request = WebRequest.Create(feedUrl);
+                request.Method = "GET";
+                using (var response = request.GetResponse() as HttpWebResponse)
+                {
+                    if (response != null)
+                    {
+                        responseCode = response.StatusCode;
+                        response.Close();
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
+            return responseCode == HttpStatusCode.OK;
         }
     }
 }
