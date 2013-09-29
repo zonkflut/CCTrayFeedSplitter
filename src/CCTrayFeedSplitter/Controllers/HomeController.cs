@@ -23,8 +23,10 @@ namespace CCTrayFeedSplitter.Controllers
             return View(feedList);
         }
 
-        public PartialViewResult Configure()
+        public PartialViewResult Configure(string partitionCountValidation = null, string feedUrlValidation = null)
         {
+            ViewBag.PartitionCountValidation = partitionCountValidation;
+            ViewBag.FeedUrlValidation = feedUrlValidation;
             var configurationModel = new ConfigurationModel
             {
                 FeedUrl = Settings.Default.FeedUrl,
@@ -36,22 +38,27 @@ namespace CCTrayFeedSplitter.Controllers
         [HttpPost]
         public ActionResult Configure(ConfigurationModel configuration)
         {
+            string partitionCountValidation = null;
+            string feedUrlValidation = null;
+            
             if (configuration.PartitionCount < 1)
             {
-                ViewBag.PartitionCountValidation = "Partition Count cannot be less than 1.";
+                partitionCountValidation = "Partition Count cannot be less than 1.";
             }
-            else if (IsValidLink(configuration.FeedUrl))
+
+            if (!IsValidLink(configuration.FeedUrl))
             {
-                ViewBag.FeedUrlValidation = "The provided URL is not available.";
+                feedUrlValidation = "The provided URL is not available.";
             }
-            else
+
+            if (partitionCountValidation == null && feedUrlValidation == null)
             {
                 Settings.Default.FeedUrl = configuration.FeedUrl;
                 Settings.Default.PartitionCount = configuration.PartitionCount;
                 Settings.Default.Save();   
             }
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Home", new { partitionCountValidation, feedUrlValidation });
         }
 
         public XmlActionResult Feed(int id)
